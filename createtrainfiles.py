@@ -1,8 +1,17 @@
 import os
 import re
 import random 
-import numpy as np
 import cv2
+IMAGE_SIZE = 227
+
+"""
+1. get the <image path,classID> tuple for each image
+2. shuffle the tuples
+3. divide the list of above tuples into training set and validation set
+4. filter out valid images
+5. create files train.txt and valid.txt having this <image path, classID> tuple
+
+"""
 
 path = "/home/sarthak/PycharmProjects/imagenet/imagenet/dataFiles/"
 
@@ -33,7 +42,7 @@ with open("/home/sarthak/PycharmProjects/imagenet/imagenet/trainData/train.txt",
 		try:
 			print(imagepath[:-3].replace("_", "/"))
 			img = cv2.imread(imagepath[:-3].replace("_", "/"))
-			img = cv2.resize(img, (227, 227))
+			img = cv2.resize(img, (IMAGE_SIZE, IMAGE_SIZE))
 
 			f.write(imagepath)
 		except Exception as e:
@@ -44,7 +53,7 @@ with open("/home/sarthak/PycharmProjects/imagenet/imagenet/trainData/valid.txt",
 	for imagepath in valid:
 		try:
 			img = cv2.imread(imagepath[:-3].replace("_", "/"))
-			img = cv2.resize(img, (227, 227))
+			img = cv2.resize(img, (IMAGE_SIZE, IMAGE_SIZE))
 			f.write(imagepath)
 		except Exception as e:
 			print("error")

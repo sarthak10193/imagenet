@@ -10,6 +10,7 @@ import re
 
 urls = ['http://image-net.org/api/text/imagenet.synset.geturls?wnid=n02084071', 'http://image-net.org/api/text/imagenet.synset.geturls?wnid=n02121808', 'http://image-net.org/api/text/imagenet.synset.geturls?wnid=n00007846']
 mypath = '/home/sarthak/PycharmProjects/imagenet/imagenet/dataFiles/'
+
 last_percent_reported = None
 
 def download_progress_hook(count, blockSize, totalSize):
@@ -30,7 +31,13 @@ def download_progress_hook(count, blockSize, totalSize):
     last_percent_reported = percent
 
 def maybe_download(filename, url,  force=False):
-  """Download a file if not present, and make sure it's the right size."""
+  """
+
+  :param filename: output .txt file for storing the hyperlinks of images downloaded from the imagenet webiste
+  :param url: ur for each class, in this implementation we have only 3 classes
+  :param force: flag for forcing the data download, if already present
+  :return: None
+  """
   if force or not os.path.exists(filename):
     print('Attempting to download:', filename)
     filename, _ = urlretrieve(url, filename, reporthook=download_progress_hook)
@@ -45,6 +52,12 @@ for class_id, url in enumerate(urls):
 print("Web Page links download Complete ... downloading jpeg images \n")
 
 current_dir = os.listdir(mypath)
+
+
+"""
+download .jpeg images for each class and put then into appropriate folders
+Folder names are of the form images-classX
+"""
 
 for file in current_dir:
   if(re.search(r'.txt', file)):
